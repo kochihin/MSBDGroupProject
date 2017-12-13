@@ -170,3 +170,12 @@ def imagePreprocessing(dataFolder, trimDarkFolder, imagePatchFolder, trainFN, pa
 
 #should do EM for some loops
 def EMLoop(trainFN, imgFolder, finalFn, totalRound, epoch) :
+
+    
+def main() :
+
+    tfInit();
+    
+    
+
+main();
