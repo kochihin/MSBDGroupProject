@@ -35,20 +35,103 @@ import glob
 import ntpath
 
 
+def splitImage(srcDir, dstDir, imageSize) : 
+#we need split the large image    
 
-def imagePreprocessing() :
-    return 
+def EMTrain(epochs, dataFolder, inputFile, resultFile) :
+#implement the EM training
 
-def training():
-    return 
+    
+def TrainModel(epochs, inputFile) :
 
-def classification():
-    return ;
+    image_size = (224,224)
+    # variables to hold features and labels
+    features = []
+    labels   = []
+    Y = []
+    class_count = 1000;
+    allImages = []
+    batchSize = 16
+    totalCount = 0
+    with open(inputFile) as myfile:
+        totalCount = sum(1 for line in myfile)
 
-def main() :
-    imagePreprocessing();
-    training();
-    classification();
+    model = MobileNet(include_top=True,weights=None, classes = class_count);
 
-main();
+    # 8. Compile model
+    model.compile(loss='categorical_crossentropy',
+                    optimizer='adam',
+                    metrics=['accuracy'])
+ 
+    class_weight = [0.0] * class_count;
+    class_weight[0] = 0.5
+    class_weight[1] = 1
+
+    model.fit_generator(generate_arrays_from_file(inputFile, batchSize, class_count),   epochs=epochs, verbose=1, steps_per_epoch=  int (( totalCount + batchSize - 1) / batchSize ), class_weight = class_weight )
+    return model
+
+def TestModel(model, preprocessFolder, testFile, resultFile) :
+    
+    maxPoolingThreshold = 0.5
+    result_F = open(resultFile, 'w')
+    input_F = open(testFile)
+    for line in input_F:
+        uid = line
+
+        srcDir = preprocessFolder + "/" + uid ;
+# find how many file to compare
+        files = (glob.glob(srcDir + "/*.png"))
+
+        IsLabelOne = False;
+
+        for image_path in files :
+            image_path = aLine[0];
+
+            # create numpy arrays of input data
+            # and labels, from each line in the file
+            #x, y = process_line(line)
+            #img = image.load_img(x)
+            img = image.load_img(image_path)
+            x = image.img_to_array(img)
+            x = np.expand_dims(x, axis=0)
+            x = preprocess_input(x)
+            
+            Y = model.predict(np.array(x))
+            thePrediction = Y[0]
+            LabelOnePercentage = float(thePrediction[1]) / float(thePrediction[0] + thePrediction[1])
+            # maxPooling
+            if (LabelOnePercentage > maxPoolingThreshold) :
+                IsLabelOne = True;
+                break;
+
+            print (uid, LabelOnePercentage)
+
+        if (IsLabelOne) :
+            result_F.write(uid + ",1\n"  );
+        else :
+            result_F.write(uid + ",0\n"  );
+
+    input_F.close();
+    result_F.close();
+
+
+def imagePreprocessing(dataFolder, trimDarkFolder, imagePatchFolder, trainFN, packFN):
+    image_size = (224,224)
+
+    #still need to implement: Cut the dark border for each image
+    cutDark(dataFolder,trimDarkFolder);
+
+    #still need to implement: Split the image into small image with size
+    splitImage(trimDarkFolder, imagePatchFolder, image_size)
+
+    #still need to implement: Assign label to small image
+    initEMPercentage(imagePatchFolder, trainFN, packFN)
+
+    #still need to implement: suffle the ratio
+    suffleFile(packFN)
+
+#should do EM for some loops    
+def EMLoop(trainFN, imgFolder, finalFn, totalRound, epoch) :
+
+
 
