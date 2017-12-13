@@ -329,7 +329,7 @@ def EMLoop(trainFN, imgFolder, finalFn, totalRound, epoch) :
 def main() :
     
    imagePreprocessing("./data", "./trimDark", "./ImagePatch", "./train.txt", "./ImagePatch/emInit.txt")
-   EMLoop("./ImagePatch/emInit.txt", "./ImagePatch", "./ImagePatch/EMFinal.txt", 10, epochs);
+   EMLoop("./ImagePatch/emInit.txt", "./ImagePatch", "./ImagePatch/EMFinal.txt", 10, 5);
     
    tfInit();
     
