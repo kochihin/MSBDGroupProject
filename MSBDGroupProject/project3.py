@@ -34,6 +34,89 @@ from os.path import isfile, join
 import glob
 import ntpath
 
+def index_of_last_zero(lst):
+    for i, value in enumerate(reversed(lst)):
+        if value == 0:
+            return len(lst)-i-1
+    return -1
+
+def index_of_last_nonzero(lst):
+    for i, value in enumerate(reversed(lst)):
+        if value != 0:
+            return len(lst)-i-1
+    return -1
+
+def cutDark(srcDir, dstDir) : 
+    if not os.path.exists(dstDir):
+        os.makedirs(dstDir)
+
+    files = (glob.glob(srcDir + "/*.png"))
+
+    for f in files :
+        imgData = io.imread(f)
+        rawFileName = ntpath.basename(f)
+
+        iRow = np.max(imgData, axis = 1)
+        iCol = np.max(imgData, axis = 0)
+        lastRow = index_of_last_nonzero(iRow)
+        lastCol = index_of_last_nonzero(iCol)
+        firstRow = np.nonzero(iRow)[0][0]
+        firstCol = np.nonzero(iCol)[0][0]
+        cropped = imgData[firstRow:lastRow,firstCol:lastCol]
+        io.imsave(dstDir + "/" + rawFileName, cropped)
+
+        print (f, imgData.shape)
+
+
+
+def splitImage(srcDir, dstDir, imageSize) : 
+    if not os.path.exists(dstDir):
+        os.makedirs(dstDir)
+
+    files = (glob.glob(srcDir + "/*.png"))
+
+    for f in files :
+        imgData = io.imread(f)
+        rawFileName = ntpath.basename(f)
+        newFolderName = dstDir + "/" + rawFileName.split("_")[0]
+        if not os.path.exists(newFolderName):
+            os.makedirs(newFolderName)
+
+        imgRow = imgData.shape[0]
+        imgCol = imgData.shape[1]
+
+        trmRow = imageSize[0]
+        trmCol = imageSize[1]
+
+        noOfRow = int ((imgRow + trmRow - 1) / trmRow)
+        noOfCol = int  (imgCol  / trmCol)
+
+        startCol = 0
+        for c in range(noOfCol) :
+            startRow = 0
+            r  = 0
+            while (startRow + trmRow < imgRow) :
+                strOfR = format(r, '02')
+                strOfC = format(c, '02')
+                newFn = "PAT_" + strOfR + "_" + strOfC + "_" + rawFileName
+                
+                
+                cropped = imgData[startRow:startRow + trmRow,startCol : startCol + trmCol]
+                iRow = np.min(cropped, axis = 1)
+                lastNonZero = index_of_last_zero(iRow)
+
+                if (lastNonZero == -1) :
+                    io.imsave(newFolderName + "/" + newFn, cropped)
+                    startRow += trmRow
+                    r += 1
+                else :
+                    startRow += lastNonZero + 1
+
+            startCol += trmCol
+
+
+        print (f, imgData.shape)
+
 def readText():
     dataFolder = "./data"
     trainData = np.loadtxt("./train.txt", dtype="str", delimiter='\t' )
@@ -50,8 +133,10 @@ def readImage(X_path , y_path):
     return X_train , y_train
 
 
-def splitImage(srcDir, dstDir, imageSize) :
-#we need split the large image
+
+def initEMPercentage(srcDir, trainFile, outputFile) :
+    
+    return ;
 
 def tfInit() :
     config = tf.ConfigProto()
@@ -219,6 +304,8 @@ def TestModel(model, preprocessFolder, testFile, resultFile) :
     input_F.close();
     result_F.close();
 
+def suffleFile(fn) :
+    return ;
 
 def imagePreprocessing(dataFolder, trimDarkFolder, imagePatchFolder, trainFN, packFN):
     image_size = (224,224)
@@ -237,14 +324,14 @@ def imagePreprocessing(dataFolder, trimDarkFolder, imagePatchFolder, trainFN, pa
 
 #should do EM for some loops
 def EMLoop(trainFN, imgFolder, finalFn, totalRound, epoch) :
-
+    return ;
     
 def main() :
     
    imagePreprocessing("./data", "./trimDark", "./ImagePatch", "./train.txt", "./ImagePatch/emInit.txt")
    EMLoop("./ImagePatch/emInit.txt", "./ImagePatch", "./ImagePatch/EMFinal.txt", 10, epochs);
     
-    tfInit();
+   tfInit();
     
     
 
