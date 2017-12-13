@@ -23,13 +23,11 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="MSBDGroupProject.py" />
     <Compile Include="project3.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Project3.pyproj" />
     <Content Include="project3.txt" />
     <Content Include="ProjectDetails.txt" />
     <Content Include="README.txt" />
