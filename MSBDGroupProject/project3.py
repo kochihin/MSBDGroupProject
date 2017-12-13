@@ -34,6 +34,17 @@ from os.path import isfile, join
 import glob
 import ntpath
 
+def index_of_last_zero(lst):
+    for i, value in enumerate(reversed(lst)):
+        if value == 0:
+            return len(lst)-i-1
+    return -1
+
+def index_of_last_nonzero(lst):
+    for i, value in enumerate(reversed(lst)):
+        if value != 0:
+            return len(lst)-i-1
+    return -1
 
 def splitImage(srcDir, dstDir, imageSize) : 
 #we need split the large image    
@@ -158,3 +169,11 @@ def EMLoop(trainFN, imgFolder, finalFn, totalRound, epoch) :
 
 
 
+    
+
+def main() :
+
+    tfInit();
+
+
+main()
