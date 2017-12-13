@@ -5,7 +5,7 @@ import os;
 # 3. Import libraries and modules
 import numpy as np
 #np.random.seed(123)  # for reproducibility
- 
+
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Convolution2D, MaxPooling2D
@@ -21,7 +21,7 @@ from keras.backend.tensorflow_backend import set_session
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 
-import glob 
+import glob
 from keras.applications.inception_v3 import InceptionV3, preprocess_input
 from keras.applications.mobilenet import MobileNet, preprocess_input
 from keras.applications.vgg16 import VGG16
@@ -34,9 +34,24 @@ from os.path import isfile, join
 import glob
 import ntpath
 
+def readText():
+    dataFolder = "./data"
+    trainData = np.loadtxt("./train.txt", dtype="str", delimiter='\t' )
+    testData = np.loadtxt("./test.txt", dtype="str",  delimiter='\t' )
 
-def splitImage(srcDir, dstDir, imageSize) : 
-#we need split the large image    
+    return trainData , testData
+
+def readImage(X_path , y_path):
+
+    for i in range(0,len(X_path)):
+        img = cv2.imread (X_path[i])
+        X_train.append(cv2.resize(img))
+        y_train.append(y_path[i])
+    return X_train , y_train
+
+
+def splitImage(srcDir, dstDir, imageSize) :
+#we need split the large image
 
 def EMTrain(epochs, dataFolder, inputFile, resultFile) :
 #implement the EM training
@@ -60,11 +75,11 @@ def EMTrain(epochs, dataFolder, inputFile, resultFile) :
     model.compile(loss='categorical_crossentropy',
                     optimizer='adam',
                     metrics=['accuracy'])
- 
+
     class_weight = [0.0] * class_count;
     class_weight[0] = 0.5
     class_weight[1] = 1
-    
+
 def TrainModel(epochs, inputFile) :
 
     image_size = (224,224)
@@ -85,7 +100,7 @@ def TrainModel(epochs, inputFile) :
     model.compile(loss='categorical_crossentropy',
                     optimizer='adam',
                     metrics=['accuracy'])
- 
+
     class_weight = [0.0] * class_count;
     class_weight[0] = 0.5
     class_weight[1] = 1
@@ -94,7 +109,7 @@ def TrainModel(epochs, inputFile) :
     return model
 
 def TestModel(model, preprocessFolder, testFile, resultFile) :
-    
+
     maxPoolingThreshold = 0.5
     result_F = open(resultFile, 'w')
     input_F = open(testFile)
@@ -118,7 +133,7 @@ def TestModel(model, preprocessFolder, testFile, resultFile) :
             x = image.img_to_array(img)
             x = np.expand_dims(x, axis=0)
             x = preprocess_input(x)
-            
+
             Y = model.predict(np.array(x))
             thePrediction = Y[0]
             LabelOnePercentage = float(thePrediction[1]) / float(thePrediction[0] + thePrediction[1])
@@ -153,8 +168,5 @@ def imagePreprocessing(dataFolder, trimDarkFolder, imagePatchFolder, trainFN, pa
     #still need to implement: suffle the ratio
     suffleFile(packFN)
 
-#should do EM for some loops    
+#should do EM for some loops
 def EMLoop(trainFN, imgFolder, finalFn, totalRound, epoch) :
-
-
-
