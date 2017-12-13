@@ -4,7 +4,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>06ea6db5-2996-498f-8fe9-07dee413e74e</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Project3.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -23,7 +24,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="MSBDGroupProject.py" />
-    <Compile Include="Project3.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Project3.pyproj" />
