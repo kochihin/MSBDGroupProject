@@ -37,3 +37,31 @@ import ntpath
 def a2Test() :
     return 1;
 
+def TrainModel(epochs, inputFile) :
+
+    image_size = (224,224)
+    # variables to hold features and labels
+    features = []
+    labels   = []
+    Y = []
+    class_count = 1000;
+    allImages = []
+    batchSize = 16
+    totalCount = 0
+    with open(inputFile) as myfile:
+        totalCount = sum(1 for line in myfile)
+
+    model = MobileNet(include_top=True,weights=None, classes = class_count);
+
+    # 8. Compile model
+    model.compile(loss='categorical_crossentropy',
+                    optimizer='adam',
+                    metrics=['accuracy'])
+ 
+    class_weight = [0.0] * class_count;
+    class_weight[0] = 0.5
+    class_weight[1] = 1
+
+    model.fit_generator(generate_arrays_from_file(inputFile, batchSize, class_count),   epochs=epochs, verbose=1, steps_per_epoch=  int (( totalCount + batchSize - 1) / batchSize ), class_weight = class_weight )
+    return model
+
