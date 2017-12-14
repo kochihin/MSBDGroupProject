@@ -238,13 +238,15 @@ def EMTrain(epochs, dataFolder, inputFile, resultFile) :
     with open(inputFile) as myfile:
         totalCount = sum(1 for line in myfile)
 
-    model = MobileNet(include_top=True,weights=None, classes = class_count);
-
+    #model = MobileNet(include_top=True,weights=None, classes = class_count);
     # 8. Compile model
-    model.compile(loss='categorical_crossentropy',
-                    optimizer='adam',
-                    metrics=['accuracy'])
+    #model.compile(loss='categorical_crossentropy',
+    #                optimizer='adam',
+    #                metrics=['accuracy'])
  
+    model = cnnFactory().CreateModel("MobileNet")
+
+
     class_weight = [0.0] * class_count;
     class_weight[0] = 0.5
     class_weight[1] = 1
@@ -300,12 +302,7 @@ def TrainModel(epochs, inputFile) :
     with open(inputFile) as myfile:
         totalCount = sum(1 for line in myfile)
 
-    model = MobileNet(include_top=True,weights='imagenet', classes = class_count);
-
-    # 8. Compile model
-    model.compile(loss='categorical_crossentropy',
-                    optimizer='adam',
-                    metrics=['accuracy'])
+    model = cnnFactory().CreateModel("MobileNet")
  
     class_weight = [0.0] * class_count;
     class_weight[0] = 0.5
@@ -381,3 +378,4 @@ def EMLoop(trainFN, imgFolder, finalFn, totalRound, epoch) :
         EMTrain(epoch, imgFolder, normalizeFn ,nextFn);
 
     normalize(nextFn ,finalFn);
+

@@ -56,10 +56,14 @@ def main() :
 #    epochs = 5
 #    emRound = 30
 
+    requirePreprocessing = True;
+    
     epochs = 1
     emRound = 1
 
-    imagePreprocessing("./data", "./trimDark", "./ImagePatch", "./train.txt", "./ImagePatch/emInit.txt")
+    if requirePreprocessing :
+        imagePreprocessing("./data", "./trimDark", "./ImagePatch", "./train.txt", "./ImagePatch/emInit.txt")
+    
     EMLoop("./ImagePatch/emInit.txt", "./ImagePatch", "./ImagePatch/EMFinal.txt", 30, epochs);
 
 

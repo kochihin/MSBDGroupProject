@@ -34,10 +34,6 @@ from os.path import isfile, join
 import glob
 import ntpath
 
-def createModel() :
-    return 1;
-
-
     # Create the model9
 def cnn():
     model = Sequential()
@@ -64,3 +60,24 @@ def cnn():
     model.add(Dense(num_classes, activation= 'softmax' ))
     model.compile(loss= 'categorical_crossentropy' , optimizer='adam', metrics=[ 'accuracy' ])
     return model;
+
+def cnnMobileNet():
+    
+    model = MobileNet(include_top=True,weights='imagenet', classes = class_count);
+
+    # 8. Compile model
+    model.compile(loss='categorical_crossentropy',
+                    optimizer='adam',
+                    metrics=['accuracy'])
+    return model;
+
+class cnnFactory :
+    def CreateModel(self, modelName) :
+        if (modelName == "MobileNet") :
+            return cnnMobileNet();
+
+        if (modelName == "cnn80") :
+            return cnn();
+
+        print ("Unknown model", modelName)
+        return None;
