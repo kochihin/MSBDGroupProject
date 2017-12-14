@@ -33,6 +33,8 @@ from os import listdir
 from os.path import isfile, join
 import glob
 import ntpath
+import fileProcessing
+
 
 def index_of_last_zero(lst):
     for i, value in enumerate(reversed(lst)):
