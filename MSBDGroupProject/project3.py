@@ -46,7 +46,7 @@ def index_of_last_nonzero(lst):
             return len(lst)-i-1
     return -1
 
-def cutDark(srcDir, dstDir) : 
+def cutDark(srcDir, dstDir) :
     if not os.path.exists(dstDir):
         os.makedirs(dstDir)
 
@@ -69,7 +69,7 @@ def cutDark(srcDir, dstDir) :
 
 
 
-def splitImage(srcDir, dstDir, imageSize) : 
+def splitImage(srcDir, dstDir, imageSize) :
     if not os.path.exists(dstDir):
         os.makedirs(dstDir)
 
@@ -99,8 +99,8 @@ def splitImage(srcDir, dstDir, imageSize) :
                 strOfR = format(r, '02')
                 strOfC = format(c, '02')
                 newFn = "PAT_" + strOfR + "_" + strOfC + "_" + rawFileName
-                
-                
+
+
                 cropped = imgData[startRow:startRow + trmRow,startCol : startCol + trmCol]
                 iRow = np.min(cropped, axis = 1)
                 lastNonZero = index_of_last_zero(iRow)
@@ -135,7 +135,7 @@ def readImage(X_path , y_path):
 
 
 def initEMPercentage(srcDir, trainFile, outputFile) :
-    
+
     return ;
 
 def tfInit() :
@@ -145,7 +145,7 @@ def tfInit() :
     set_session(tf.Session(config=config))
 
 def filePrefixWith(folder, filePrefix) :
-    for filename in os.listdir(folder) : 
+    for filename in os.listdir(folder) :
         if filename.startswith(filePrefix)  :
             return folder + "/" + filename;
 
@@ -168,7 +168,7 @@ def generate_arrays_from_file(path, batchSize, class_count):
             weight = float(aLine[2]);
 
             if (label == 0) :
-                weight = 1 
+                weight = 1
             else :
                 weight = weight * 2
 
@@ -182,7 +182,7 @@ def generate_arrays_from_file(path, batchSize, class_count):
             x = np.expand_dims(x, axis=0)
             x = preprocess_input(x)
             batchCount += 1
-            
+
             ground_truth = np.zeros(class_count, dtype=np.float32)
             ground_truth[label] = 1;
 
@@ -376,14 +376,49 @@ def imagePreprocessing(dataFolder, trimDarkFolder, imagePatchFolder, trainFN, pa
 #should do EM for some loops
 def EMLoop(trainFN, imgFolder, finalFn, totalRound, epoch) :
     return ;
-    
+
+    # Create the model9
+def cnn():
+    model = Sequential()
+    model.add(Convolution2D(16, 3, 3, input_shape=(80, 80, 3), activation= 'relu' , border_mode= 'same' ))
+    model.add(Dropout(0.2))
+    model.add(Convolution2D(32, 3, 3, activation= 'relu' , border_mode= 'same' ))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Convolution2D(64, 3, 3, activation= 'relu' , border_mode= 'same' ))
+    model.add(Dropout(0.2))
+    model.add(Convolution2D(128, 3, 3, activation= 'relu' , border_mode= 'same' ))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Convolution2D(128, 3, 3, activation= 'relu' , border_mode= 'same' ))
+    model.add(Dropout(0.2))
+    model.add(Convolution2D(128, 3, 3, activation= 'relu' , border_mode= 'same' ))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Flatten())
+    model.add(Dropout(0.2))
+    model.add(Dense(2048, activation= 'relu' , W_constraint=maxnorm(3)))
+    model.add(Dropout(0.2))
+    model.add(Dense(1024, activation= 'relu' , W_constraint=maxnorm(2)))
+    model.add(Dropout(0.2))
+    model.add(Dense(512, activation= 'relu' , W_constraint=maxnorm(1)))
+    model.add(Dropout(0.2))
+    model.add(Dense(num_classes, activation= 'softmax' ))
+    model.compile(loss= 'categorical_crossentropy' , optimizer='adam', metrics=[ 'accuracy' ])
+    return model;
+
 def main() :
-    
+
    imagePreprocessing("./data", "./trimDark", "./ImagePatch", "./train.txt", "./ImagePatch/emInit.txt")
    EMLoop("./ImagePatch/emInit.txt", "./ImagePatch", "./ImagePatch/EMFinal.txt", 10, 5);
-    
+
    tfInit();
-    
-    
+
+
+    epochs = 200
+    estimator = KerasClassifier(build_fn=cnn)
+
+
+    estimator.fit(X_train, y_train, validation_data=(X_test, y_test), nb_epoch=epochs, batch_size = 64)
+
+
+    y_pred = estimator.predict(X_test)
 
 main();
