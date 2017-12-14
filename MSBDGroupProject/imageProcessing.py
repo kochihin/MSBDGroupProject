@@ -89,3 +89,16 @@ def initEMPercentage(srcDir, trainFile, outputFile) :
             f.write(file + "\t" + aLine[1] + "\t" + str( float(aLine[1]) / float(fileLen)) + "\n" )  # python will convert \n to os.linesep
 			
     f.close()  # you can omit in most cases as the destructor will call it
+
+def imagePreprocessing(dataFolder, trimDarkFolder, imagePatchFolder, trainFN, packFN):
+    image_size = (224,224)
+
+    print ("Cut the dark border for each image")
+    cutDark(dataFolder,trimDarkFolder);
+
+    print ("Split the image into small image with size ", image_size)
+    splitImage(trimDarkFolder, imagePatchFolder, image_size)
+
+
+    print ("Assign label to small image ", image_size)
+    initEMPercentage(imagePatchFolder, trainFN, packFN)
