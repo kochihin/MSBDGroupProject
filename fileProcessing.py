@@ -62,3 +62,21 @@ def generate_arrays_from_file(path, batchSize, class_count):
 
             ground_truth = np.zeros(class_count, dtype=np.float32)
             ground_truth[label] = 1;
+
+            targets.append(ground_truth)
+            inputs.append(x[0])
+
+            weights.append(weight)
+
+            if batchCount >= batchSize:
+                batchCount = 0
+                X = np.array(inputs)
+                y = np.array(targets)
+                w = np.array(weights)
+
+                inputs = []
+                targets = []
+                weights = []
+                yield X, y              #, w
+
+        f.close()
