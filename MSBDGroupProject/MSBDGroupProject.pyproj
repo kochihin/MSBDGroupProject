@@ -25,6 +25,7 @@
     <Compile Include="fileProcessing.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="imageProcessing.py" />
     <Compile Include="project3.py">
       <SubType>Code</SubType>
     </Compile>

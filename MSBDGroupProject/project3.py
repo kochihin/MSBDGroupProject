@@ -34,6 +34,8 @@ from os.path import isfile, join
 import glob
 import ntpath
 import fileProcessing
+import imageProcessing
+
 
 
 def index_of_last_zero(lst):
