@@ -33,22 +33,8 @@ from os import listdir
 from os.path import isfile, join
 import glob
 import ntpath
-import fileProcessing
-import imageProcessing
-
-
-
-def index_of_last_zero(lst):
-    for i, value in enumerate(reversed(lst)):
-        if value == 0:
-            return len(lst)-i-1
-    return -1
-
-def index_of_last_nonzero(lst):
-    for i, value in enumerate(reversed(lst)):
-        if value != 0:
-            return len(lst)-i-1
-    return -1
+from fileProcessing import *
+from imageProcessing import *
 
 
 def splitImage(srcDir, dstDir, imageSize) :
@@ -394,13 +380,13 @@ def main() :
    tfInit();
 
 
-    epochs = 200
-    estimator = KerasClassifier(build_fn=cnn)
+   epochs = 200
+   estimator = KerasClassifier(build_fn=cnn)
 
 
-    estimator.fit(X_train, y_train, validation_data=(X_test, y_test), nb_epoch=epochs, batch_size = 64)
+   estimator.fit(X_train, y_train, validation_data=(X_test, y_test), nb_epoch=epochs, batch_size = 64)
 
 
-    y_pred = estimator.predict(X_test)
+   y_pred = estimator.predict(X_test)
 
 main();
