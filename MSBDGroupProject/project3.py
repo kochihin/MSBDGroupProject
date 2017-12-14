@@ -307,6 +307,57 @@ def TestModel(model, preprocessFolder, testFile, resultFile) :
 def suffleFile(fn) :
     return ;
 
+def normalizeFinal(inputFile, outFn) : 
+    users = {}
+    minWeightUser = {}
+    maxWeightUserFn = {}
+    maxWeightUser = {}
+    removeUser = {}
+    minWeightUserFn = {}
+
+    input_F = open(inputFile)
+    for line in input_F:
+        aLine = line.split('\t')
+        uid = aLine[0].split('_')[3]
+        correctWeight = float(aLine[2])
+        if (not uid in users) :
+            users[uid] = 0.0
+            minWeightUser[uid] = 9999999
+            maxWeightUser[uid] = 0
+            
+        users[uid] += 1 
+        if (correctWeight > maxWeightUser[uid]) :
+            maxWeightUser[uid] = correctWeight ;
+            maxWeightUserFn[uid] = aLine[0]
+
+            
+        if (correctWeight < minWeightUser[uid]) :
+            minWeightUser[uid] = correctWeight;
+            minWeightUserFn[uid] = aLine[0]
+
+    input_F.close()
+
+
+    result_F = open(outFn, 'w')
+    input_F = open(inputFile)
+    for line in input_F:
+        aLine = line.split('\t')
+        uid = aLine[0].split('_')[3]
+        label = int(aLine[1]);
+        newWeight = float(aLine[2]) / users[uid]
+        if (label == 0) :
+            newWeight = 1
+        origWeight = float(aLine[2])
+
+
+        if (label == 1 and users[uid] > 1 and maxWeightUserFn[uid] != aLine[0]) :
+            print("Skip", uid, origWeight, newWeight) 
+        else :
+            result_F.write(aLine[0] + "\t" + aLine[1] + "\t" + str( origWeight ) + "\n" )  # python will convert \n to os.linesep
+
+    input_F.close()
+    result_F.close()
+
 def imagePreprocessing(dataFolder, trimDarkFolder, imagePatchFolder, trainFN, packFN):
     image_size = (224,224)
 
