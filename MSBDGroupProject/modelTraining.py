@@ -317,7 +317,7 @@ def TestModel(model, preprocessFolder, testFile, resultFile) :
     result_F = open(resultFile, 'w')
     input_F = open(testFile)
     for line in input_F:
-        uid = line.rstrip()
+        uid = line.split('\t')[0].rstrip()
 
         srcDir = preprocessFolder + "/" + uid ;
 # find how many file to compare
@@ -345,7 +345,7 @@ def TestModel(model, preprocessFolder, testFile, resultFile) :
                 IsLabelOne = True;
                 break;
 
-            print (uid, LabelOnePercentage)
+#           print (uid, LabelOnePercentage)
 
         if (IsLabelOne) :
             result_F.write(uid + ",1\n"  );
@@ -371,8 +371,9 @@ def EMLoop(trainFN, imgFolder, finalFn, totalRound, epoch) :
             normalize(inFn ,tFn);
             inFn = tFn
 
-        print ("Store normalize data file ", normalizeFn)
         normalize(inFn ,normalizeFn);
+
+        print ("Store normalize data file ", normalizeFn)
 
         print ("Expectation Round " + str(k) + " - train the model and recacluate the label")
         EMTrain(epoch, imgFolder, normalizeFn ,nextFn);

@@ -63,7 +63,8 @@ def cnn():
 
 def cnnMobileNet():
     
-    model = MobileNet(include_top=True,weights='imagenet', classes = class_count);
+ 
+    model = MobileNet(include_top=True,weights='imagenet');
 
     # 8. Compile model
     model.compile(loss='categorical_crossentropy',
