@@ -1,12 +1,12 @@
 
-import os; 
+import os;
 
 # 3. Import libraries and modules
 import numpy as np
 #np.random.seed(123)  # for reproducibility
 import json
 
-import glob 
+import glob
 from sklearn.metrics import classification_report
 from skimage import io
 from os import listdir
@@ -50,3 +50,22 @@ def cutDark(srcDir, dstDir) :
 
         print (f, imgData.shape)
 
+
+def splitImage(srcDir, dstDir, imageSize) :
+    if not os.path.exists(dstDir):
+        os.makedirs(dstDir)
+
+    files = (glob.glob(srcDir + "/*.png"))
+
+    for f in files :
+        imgData = io.imread(f)
+        rawFileName = ntpath.basename(f)
+        newFolderName = dstDir + "/" + rawFileName.split("_")[0]
+        if not os.path.exists(newFolderName):
+            os.makedirs(newFolderName)
+
+        imgRow = imgData.shape[0]
+        imgCol = imgData.shape[1]
+
+        trmRow = imageSize[0]
+        trmCol = imageSize[1]
