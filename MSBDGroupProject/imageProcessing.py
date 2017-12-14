@@ -69,3 +69,23 @@ def splitImage(srcDir, dstDir, imageSize) :
 
         trmRow = imageSize[0]
         trmCol = imageSize[1]
+		
+def initEMPercentage(srcDir, trainFile, outputFile) :
+    
+    trainData = np.loadtxt(trainFile, dtype="str", delimiter='\t' );
+
+    f = open( outputFile, 'w')
+    for k in range(len(trainData)) :
+        
+        aLine = trainData[k];
+        targetDir = srcDir + "/"  + aLine[0]
+        label = aLine[1]
+
+        files = (glob.glob(targetDir + "/*.png"))
+
+        totalFile = 0
+        fileLen= len(files)
+        for file in files : 
+            f.write(file + "\t" + aLine[1] + "\t" + str( float(aLine[1]) / float(fileLen)) + "\n" )  # python will convert \n to os.linesep
+			
+    f.close()  # you can omit in most cases as the destructor will call it
