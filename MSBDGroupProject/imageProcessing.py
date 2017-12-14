@@ -15,6 +15,22 @@ import glob
 import ntpath
 
 
+def readText():
+    dataFolder = "./data"
+    trainData = np.loadtxt("./train.txt", dtype="str", delimiter='\t' )
+    testData = np.loadtxt("./test.txt", dtype="str",  delimiter='\t' )
+
+    return trainData , testData
+
+def readImage(X_path , y_path):
+
+    for i in range(0,len(X_path)):
+        img = cv2.imread (X_path[i])
+        X_train.append(cv2.resize(img))
+        y_train.append(y_path[i])
+    return X_train , y_train
+
+
 
 def index_of_last_zero(lst):
     for i, value in enumerate(reversed(lst)):
