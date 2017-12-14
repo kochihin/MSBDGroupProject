@@ -35,7 +35,7 @@ import glob
 import ntpath
 from fileProcessing import *
 from imageProcessing import *
-
+from modelTraining import *
 
 def splitImage(srcDir, dstDir, imageSize) :
     if not os.path.exists(dstDir):
