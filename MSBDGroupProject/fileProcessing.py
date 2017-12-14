@@ -19,3 +19,10 @@ def fileProcessing():
     trainData = np.loadtxt("./train.txt", dtype="str", delimiter='\t' )
     testData = np.loadtxt("./test.txt", dtype="str",  delimiter='\t' )
     return trainData , testData
+	
+def filePrefixWith(folder, filePrefix) :
+    for filename in os.listdir(folder) : 
+        if filename.startswith(filePrefix)  :
+            return folder + "/" + filename;
+
+    return "";
