@@ -35,7 +35,7 @@ import glob
 import ntpath
 from fileProcessing import *
 from imageProcessing import *
-from modelTraining import *
+from mo import *
 from cnnmodel import *
 
 
