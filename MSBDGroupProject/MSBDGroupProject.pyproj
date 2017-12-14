@@ -22,6 +22,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="cnnmodel.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="fileProcessing.py">
       <SubType>Code</SubType>
     </Compile>
