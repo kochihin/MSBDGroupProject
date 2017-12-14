@@ -59,13 +59,11 @@ def main() :
     tfInit();
 
 
-#    epochs = 5
-#    emRound = 30
+    epochs = 5
+    emRound = 30
 
-    requirePreprocessing = False;
+    requirePreprocessing = True;
     requireEMTraining = True;    
-    epochs = 1
-    emRound = 5
 
     if requirePreprocessing :
         imagePreprocessing("./data", "./trimDark", "./ImagePatch", "./train.txt", "./ImagePatch/emInit.txt")
@@ -74,7 +72,7 @@ def main() :
         EMLoop("./ImagePatch/emInit.txt", "./ImagePatch", "./ImagePatch/EMFinal.txt", emRound, epochs);
 
 
-#   epochs = 30
+    epochs = 30
 
     upSample("./ImagePatch/EMFinal.txt", "./ImagePatch/EMFinal_us.txt", 3)
     model = TrainModel(epochs, "./ImagePatch/EMFinal_us.txt" );
