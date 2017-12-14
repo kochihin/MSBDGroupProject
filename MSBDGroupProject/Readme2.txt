@@ -7,3 +7,4 @@ each line stands for a data sample. The unique image id and the label is splitte
 -test.txt is the file list of test data samples
 each line stands for a test data sample. It contains the unique image id only.
 
+- refer to doc for detail implementation
