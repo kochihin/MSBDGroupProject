@@ -355,12 +355,12 @@ def TestModel(model, preprocessFolder, testFile, resultFile) :
     input_F.close();
     result_F.close();
 
-def EMLoop(trainFN, imgFolder, finalFn, totalRound, epoch) :
-    nextFn = imgFolder + "/EMRound1.txt"
+def EMLoop(trainFN, imgFolder, finalFn, totalRound, epoch, startRound = 1) :
+    nextFn =  imgFolder +"/EMRound" + str(startRound) + ".txt"
     EMTrain(epoch, imgFolder, trainFN , nextFn);
 
     removeLastN = 4
-    for k in range(1, totalRound):
+    for k in range(startRound, totalRound):
         inFn = imgFolder +"/EMRound" + str(k) + ".txt"
         normalizeFn = imgFolder +"/EMRound" + str(k) + "n.txt"
         nextFn = imgFolder +"/EMRound" + str(k+1) + ".txt"

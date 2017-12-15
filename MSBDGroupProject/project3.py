@@ -52,6 +52,21 @@ def CalculateValidationAccuracy(resultFile, validationFile) :
 
     print ("Accuracy :", correct * 100 / (total))
 
+def CalculateValidationAccuracy2(resultFile, validationFile) :
+    tData = np.loadtxt(resultFile, dtype="str", delimiter='\t' )
+    vData = np.loadtxt(validationFile, dtype="str", delimiter=',' )
+    correct = 0
+    total = 0
+    result = {}
+    for d in tData :
+        result[d[0]] = d[1]
+
+    for d in vData :
+        if (int(result[d[0]]) == int(d[1])) :
+            correct += 1
+        total += 1
+
+    print ("Accuracy :", correct * 100 / (total))
 
 def main() :
 
@@ -61,20 +76,24 @@ def main() :
 
     epochs = 5
     emRound = 30
+    startRound = 1
 
     requirePreprocessing = True;
     requireEMTraining = True;    
+    emInit = "./ImagePatch/emInit.txt"
 
     if requirePreprocessing :
-        imagePreprocessing("./data", "./trimDark", "./ImagePatch", "./train.txt", "./ImagePatch/emInit.txt")
+        imagePreprocessing("./data", "./trimDark", "./ImagePatch", "./train.txt", emInit)
     
     if requireEMTraining :
-        EMLoop("./ImagePatch/emInit.txt", "./ImagePatch", "./ImagePatch/EMFinal.txt", emRound, epochs);
+        EMLoop(emInit, "./ImagePatch", "./ImagePatch/EMFinal.txt", emRound, epochs, startRound);
 
 
     epochs = 30
 
-    upSample("./ImagePatch/EMFinal.txt", "./ImagePatch/EMFinal_us.txt", 3)
+
+    print ("Training CNN - 2")
+    upSample("./ImagePatch/EMFinal.txt", "./ImagePatch/EMFinal_us.txt", 4)
     model = TrainModel(epochs, "./ImagePatch/EMFinal_us.txt" );
 
     TestModel(model, "./ImagePatch", "./val.txt", "./Project3_validation_result.csv")
