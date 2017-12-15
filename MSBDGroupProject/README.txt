@@ -11,6 +11,6 @@ each line stands for a test data sample. It contains the unique image id only.
 
 - run the code by python project3.py
 
-- This require kera, sckitlearn, sckitimage
+- This require kera, sckitlearn, sckitimage, tensorflow
 
 - Project3_result.csv store the classification result
