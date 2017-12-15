@@ -16,4 +16,4 @@ each line stands for a test data sample. It contains the unique image id only.
 
 - report.pdf describe how to classify this problem
 
-- source code: Project3. py
+- source code: Project3.py
