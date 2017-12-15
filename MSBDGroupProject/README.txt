@@ -12,7 +12,7 @@ each line stands for a test data sample. It contains the unique image id only.
 
 - This require kera, sckitlearn, sckitimage, tensorflow
 
-- Project3_result.csv store the classification result
+- Project3_result.csv store the classification result in csv format, column 1: userId, column 2(Classification result): 0/1
 
 - report.pdf describe how to classify this problem
 
